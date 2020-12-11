@@ -5,6 +5,7 @@ import com.example.Ingredient
 import com.example.clients.FuelClient
 import com.example.clients.RestTemplateClient
 import com.example.requiredIngredients
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import org.springframework.stereotype.Service
@@ -20,7 +21,7 @@ class FoodMakerRestTemplateService(restTemplateClient: RestTemplateClient) : Abs
 class FoodMakerSuspendingService(restTemplateClient: RestTemplateClient) : AbstractSuspendHandler(restTemplateClient) {
     override suspend fun prepareGingerbread(existingIngredients: Set<Ingredient>): Gingerbread? {
         return supervisorScope { //prevents from exception propagation
-            val missingIngredientsBought = try { async { buyMissingIngredients(requiredIngredients, existingIngredients) }.await() } catch (ex: ResourceAccessException) { false }
+            val missingIngredientsBought = execBlocking { buyMissingIngredients(requiredIngredients, existingIngredients) }
             if (!missingIngredientsBought) {
                 throw RuntimeException("cannot get missing ingredients")
             }
@@ -28,13 +29,23 @@ class FoodMakerSuspendingService(restTemplateClient: RestTemplateClient) : Abstr
             val oven = heatOven()
             val heat = async { heatButterWithHoney() }
             val dough = async { prepareDough() }
-            val mixedDoughWithButter = try { mixDoughWithButter(heat.await(), dough.await()) } catch (ex: ResourceAccessException) { false }
+            val mixedDoughWithButter = execBlocking { mixDoughWithButter(heat.await(), dough.await()) }
 
             val tray = async { prepareCakeTray() }
-            val baked = try { async { bake(oven, mixedDoughWithButter, tray.await()) }.await() } catch (ex: ResourceAccessException) { false }
-            val icing = try { async { prepareIcing() }.await() } catch (ex: ResourceAccessException) { false }
+            val baked = execBlocking { bake(oven, mixedDoughWithButter, tray.await()) }
+            val icing = execBlocking { prepareIcing() }
 
             Gingerbread(baked, icing)
         }
     }
+
+    private suspend fun CoroutineScope.execBlocking(block: suspend CoroutineScope.() -> Boolean) =
+        try {
+            async(block = block).await()
+        } catch (ex: ResourceAccessException) {
+            false
+        }
+
+
 }
+
