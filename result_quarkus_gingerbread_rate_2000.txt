@@ -1,0 +1,14 @@
+running http://localhost:8083/gingerbread/quarkus_gingerbread
+Requests      [total, rate, throughput]         120000, 2000.01, 1978.83
+Latencies     [min, mean, 50, 90, 95, 99, max]  21.525µs, 81.849ms, 80.3ms, 80.618ms, 91.386ms, 107.16ms, 703.543ms
+Success       [ratio]                           99.07%
+completed http://localhost:8083/gingerbread/quarkus_gingerbread sleep for 30s
+sleeping  for 30s
+awake
+running http://localhost:8083/gingerbread/quarkus_gingerbread
+Requests      [total, rate, throughput]         120000, 2000.02, 1863.81
+Latencies     [min, mean, 50, 90, 95, 99, max]  22.402µs, 84.63ms, 80.293ms, 80.476ms, 101.995ms, 133.15ms, 3.613s
+Success       [ratio]                           93.65%
+completed http://localhost:8083/gingerbread/quarkus_gingerbread sleep for 30s
+sleeping  for 30s
+awake

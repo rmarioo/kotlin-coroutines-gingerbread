@@ -1,0 +1,13 @@
+running http://localhost:8080/gingerbread/webfluxPureReactive
+Requests      [total, rate, throughput]         120000, 2000.02, 827.45
+Latencies     [min, mean, 50, 90, 95, 99, max]  18.129µs, 110.76ms, 78.347ms, 212.03ms, 430.509ms, 1.653s, 3.19s
+Success       [ratio]                           41.45%
+completed http://localhost:8080/gingerbread/webfluxPureReactive sleep for 30s
+sleeping  for 30s
+awake
+running http://localhost:8080/gingerbread/webfluxPureReactive
+Requests      [total, rate, throughput]         120000, 2000.02, 885.90
+Latencies     [min, mean, 50, 90, 95, 99, max]  17.949µs, 108.756ms, 9.093ms, 150.616ms, 297.298ms, 1.988s, 5.001s
+Success       [ratio]                           44.39%
+completed http://localhost:8080/gingerbread/webfluxPureReactive sleep for 30s
+sleeping  for 30s
